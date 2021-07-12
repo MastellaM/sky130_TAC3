@@ -1,0 +1,83 @@
+**.subckt Axon_Hillock
+XM2 inv mem vss vss sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+XM11 inv mem vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+XM1 out inv vss vss sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+XM3 out inv vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+C2 out mem 5p m=1
+V1 vdd vss 1.8
+I2 vdd gcasc 1n
+C1 mem vss 5p m=1
+Vsens sens net2 0
+XM5 net1 mir vdd vdd sky130_fd_pr__pfet_01v8 L=0.4 W=2 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+XM6 mir mir vdd vdd sky130_fd_pr__pfet_01v8 L=0.4 W=96 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=640 m=640 
+XM4 mem out vss vss sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+XM7 mir gcasc sens vss sky130_fd_pr__nfet_01v8 L=0.15 W=20 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=20 m=20 
+XM8 gcasc net2 vss vss sky130_fd_pr__nfet_01v8 L=20 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1 
+Vin net1 mem 0
+x1 pressure vss net2 vss piezoresistor
+Vpressure pressure vss 50 pwl(0 1 2m 140 4m 1)
+**** begin user architecture code
+
+
+.options gmin=1e-15 abstol=1p
+.option savecurrents
+vvss vss 0 0
+.control
+save all
+tran 10n 5m
+write Axon_hillock.raw
+plot mem out sens gcasc mir inv
+*plot Input
+plot vsens#branch
+plot vin#branch
+op
+write Axon_hillock_op.raw
+wrdata spikes_AH.csv out
+
+.endc
+
+
+ .lib /media/cmaier/4TBext4bak/EDA/skywater-pdk/libraries/sky130_fd_pr_ngspice/latest/models/sky130.lib.spice tt
+
+.param mc_mm_switch=0
+.param mc_pr_switch=1
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /home/cmaier/.xschem/sky130_TAC3/circuits/piezoresistor.sym # of pins=4
+* sym_path: /home/cmaier/.xschem/sky130_TAC3/circuits/piezoresistor.sym
+* sch_path: /home/cmaier/.xschem/sky130_TAC3/circuits/piezoresistor.sch
+.subckt piezoresistor  pressure_pos pressure_neg resistor_pos resistor_neg
+*.ipin pressure_pos
+*.ipin pressure_neg
+*.iopin resistor_pos
+*.iopin resistor_neg
+Broot sqrtp 0 V = sqrt(v(pressure_pos,pressure_neg))
+Bres res 0 V = 106*(50/v(sqrtp)-1)*exp(-0.328*v(sqrtp))+15
+Brvar resistor_pos resistor_neg I = V(resistor_pos,resistor_neg)/V(res)
+.ends
+
+** flattened .save nodes
+.save I(Vsens)
+.save I(Vin)
+.end
