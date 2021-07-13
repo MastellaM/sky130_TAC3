@@ -1,0 +1,36 @@
+v {xschem version=2.9.9 file_version=1.2 }
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname"
+template="name=x1"
+}
+V {}
+S {}
+E {}
+L 4 -130 -60 -130 60 {}
+L 4 -10 -60 -10 60 {}
+L 4 -150 -30 -130 -30 {}
+L 4 -70 -80 -70 -60 {}
+L 4 -150 -10 -130 -10 {}
+L 4 -150 10 -130 10 {}
+L 4 -150 30 -130 30 {}
+L 4 -10 -30 10 -30 {}
+L 4 -70 60 -70 80 {}
+L 4 -130 -60 -10 -60 {}
+L 4 -130 60 -10 60 {}
+B 5 -152.5 -32.5 -147.5 -27.5 {name=input_UI dir=in }
+B 5 -72.5 -82.5 -67.5 -77.5 {name=vdd dir=in }
+B 5 -152.5 -12.5 -147.5 -7.5 {name=vgain_NI dir=in }
+B 5 -152.5 7.5 -147.5 12.5 {name=vleak_NI dir=in }
+B 5 -152.5 27.5 -147.5 32.5 {name=vrefr_NI dir=in }
+B 5 -72.5 77.5 -67.5 82.5 {name=vss dir=in }
+B 5 7.5 -32.5 12.5 -27.5 {name=vmem_VO dir=out }
+T {@symname} -53 64 0 0 0.3 0.3 {}
+T {@name} -45 -82 0 0 0.2 0.2 {}
+T {input_UI} -125 -34 0 0 0.2 0.2 {}
+T {vdd} -75 -54 0 0 0.2 0.2 {}
+T {vgain_NI} -125 -14 0 0 0.2 0.2 {}
+T {vleak_NI} -125 6 0 0 0.2 0.2 {}
+T {vrefr_NI} -125 26 0 0 0.2 0.2 {}
+T {vss} -85 46 0 0 0.2 0.2 {}
+T {vmem_VO} -15 -34 0 1 0.2 0.2 {}

@@ -18,13 +18,13 @@ Current_PATH = os.getcwd()
 FILE_PATH = os.path.dirname(os.getcwd())
 DATA_PATH = os.path.join(FILE_PATH, 'data')
 file_current = '1t1r_current_transdiode_vdd0v2.csv'
-file_voltage = '1t1r_voltage_transdiode_vdd0v2.csv'
+file_voltage = 'voltage_piezo.csv'
+file_current = 'current_reference.csv'
+file_voltage_ref = 'voltage_reference.csv'
 file_measured = 'GTac_data.xlsx'
 input_analog = pd.read_excel(os.path.join(DATA_PATH, file_measured),header = 1)
 data = pd.read_csv(os.path.join(DATA_PATH, file_voltage), sep=' ')
-time = data[data.columns[1]]
-new_signal = np.where(np.diff(time)<0)[0]
-voltage = data[data.columns[3]]
+data_ref = pd.read_csv(os.path.join(DATA_PATH, file_voltage_ref), sep=' ')
 fig1,axis1 = plt.subplots(nrows = 1, ncols = 1)
 axis1.semilogy(input_analog[input_analog.columns[0]],input_analog[input_analog.columns[1]],color = 'r',linewidth=5, label = 'Pressure')
 axis1.set_ylabel('Resistance(Ohm)')
