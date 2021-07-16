@@ -93,7 +93,7 @@ vvss vss 0 0
 save all
 
 
-dc v1 0 50 1
+dc v1 0 200 1
 
 plot all.vtest all.vtest2
 plot vtest3
@@ -111,7 +111,7 @@ wrdata current_reference.csv all.vmeas2#branch
 .endc
 "}
 C {devices/vsource.sym} 1660 -1210 0 0 {name=V1 value=0}
-C {devices/code.sym} 1520 -1460 0 0 {name=TT_MODELS
+C {devices/code.sym} 1440 -1520 0 0 {name=TT_MODELS
 only_toplevel=true
 format="tcleval( @value )"
 value=".lib \\\\$::SKYWATER_MODELS\\\\/models/sky130.lib.spice tt

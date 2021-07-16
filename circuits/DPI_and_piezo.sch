@@ -23,7 +23,7 @@ E {}
 N 30 -140 30 -120 { lab=vdd}
 N 30 40 30 60 { lab=vss}
 N 460 40 460 60 { lab=vss}
-N 460 -150 460 -120 { lab=vdd}
+N 460 -150 460 -120 { lab=#net1}
 N 370 -50 380 -50 { lab=vgain_NI}
 N 370 -30 380 -30 { lab=vleak_NI}
 N 370 -10 380 -10 { lab=vrefr_NI}
@@ -55,7 +55,7 @@ N -190 -50 -190 -20 { lab=vss}
 N -680 100 -660 100 { lab=vss}
 N 540 -70 570 -70 { lab=vmem}
 N 570 -90 570 -70 { lab=vmem}
-N 350 -70 380 -70 { lab=#net1}
+N 350 -70 380 -70 { lab=#net2}
 N -450 290 -450 320 { lab=vbiasp}
 N -450 380 -450 400 { lab=vss}
 N -450 160 -450 200 { lab=vdd}
@@ -71,25 +71,25 @@ N -590 380 -450 380 { lab=vss}
 N -590 160 -590 170 { lab=vdd}
 N -590 160 -450 160 { lab=vdd}
 N -450 200 -450 230 { lab=vdd}
-N 80 -70 90 -70 { lab=#net2}
-N 90 -70 90 -40 { lab=#net2}
-N 90 -40 130 -40 { lab=#net2}
-N 130 -40 130 -10 { lab=#net2}
+N 80 -70 90 -70 { lab=#net3}
+N 90 -70 90 -40 { lab=#net3}
+N 90 -40 130 -40 { lab=#net3}
+N 130 -40 130 -10 { lab=#net3}
 N 90 20 170 20 { lab=vss}
-N 170 -70 170 -40 { lab=#net3}
-N 210 -100 230 -100 { lab=#net3}
-N 220 -100 220 -60 { lab=#net3}
-N 170 -60 220 -60 { lab=#net3}
+N 170 -70 170 -40 { lab=#net4}
+N 210 -100 230 -100 { lab=#net4}
+N 220 -100 220 -60 { lab=#net4}
+N 170 -60 220 -60 { lab=#net4}
 N 170 -130 270 -130 { lab=vdd}
-N 270 -70 290 -70 { lab=#net4}
+N 270 -70 290 -70 { lab=#net5}
 N 270 -130 270 -100 { lab=vdd}
 N 170 -130 170 -100 { lab=vdd}
 N 210 -150 210 -130 { lab=vdd}
 N 150 20 150 50 { lab=vss}
 N 170 -10 170 20 { lab=vss}
 N 90 -10 90 20 { lab=vss}
+N 460 -240 460 -210 { lab=vdd}
 C {DPI_neuron.sym} 530 -40 0 0 {name=x2}
-C {devices/lab_pin.sym} 460 -150 0 0 {name=l2 lab=vdd}
 C {devices/lab_pin.sym} 30 -140 0 0 {name=l4 lab=vdd}
 C {devices/lab_pin.sym} 30 60 0 0 {name=l1 lab=vss}
 C {devices/lab_pin.sym} 460 60 0 0 {name=l3 lab=vss}
@@ -156,29 +156,32 @@ C {piezoresistive_synapse.sym} 30 -30 0 0 {name=x1}
 C {devices/code_shown.sym} 610 -190 0 0 {name=ngspice only_toplevel=false value=".option savecurrents
 .option gmin = 1e-18
 vvss vss 0 0
-v5 pressure_in 0 1
+v5 pressure_in 0 40
 .control
 save all
-let i=10
-while i le 50
-alter v5 i
-tran 1u 10
+
+*let i=0.01
+
+*while i le 200
+*alter pressure_in i
+*tran 1u 1
 *plot "vmem" vs "time"
 *plot "vout" vs "time"
-let i=i+5
-end
-plot "all.vmem" vs "time"
-*tran 10u 5
+*let i=i+10
+*end
+tran 100u 5
 
-plot vmem
+plot all.vmem
 plot vsyn
 plot all.vmeas#branch
+plot all.vmeas2#branch
 plot pressure_in
 
 op
 
-wrdata pressure_in.csv all.pressure_in
-wrdata spikes_DPI.csv all.vmem
+*wrdata pressure_in.csv all.pressure_in
+wrdata spikes_DPI_coll.csv all.vmem
+wrdata power_consumption.csv all.vmeas2#branch
 .endc
 "}
 C {devices/lab_pin.sym} 570 -90 0 0 {name=l43 lab=vmem}
@@ -285,3 +288,5 @@ spiceprefix=X
 }
 C {devices/lab_pin.sym} 210 -150 0 0 {name=l17 sig_type=std_logic lab=vdd}
 C {devices/lab_pin.sym} 150 50 0 0 {name=l23 sig_type=std_logic lab=vss}
+C {devices/ammeter.sym} 460 -180 0 0 {name=Vmeas2}
+C {devices/lab_pin.sym} 460 -240 0 0 {name=l2 sig_type=std_logic lab=vdd}
